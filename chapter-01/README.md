@@ -35,3 +35,22 @@
     It pushes the Docker image to the local Docker image repository that’s installed when you install Docker.
   </li>
 </ol>
+
+<p>
+  The following listing shows the contents of the Dockerfile from your licensing service.
+</p>
+
+FROM openjdk:8-jdk-alpine -> This is the Linux Docker image that you’re going to use in your Docker run-time. This installation is optimized for Java applications.
+
+RUN apk update && apk upgrade && apk add netcat-openbsd -> You install nc (netcat), a utility that you’ll use to ping dependent services to see if they are up.
+
+RUN mkdir -p /usr/local/licensingservice
+
+ADD licensing-service-0.0.1-SNAPSHOT.jar /usr/local/licensingservice/ -> The Docker ADD command copies the executable JAR from the local filesystem to the Docker image.
+
+ADD run.sh run.sh -> You add a custom BASH shell script that will monitor for service dependencies and then launch the actual service.
+
+RUN chmod +x run.sh
+
+CMD ./run.sh
+
