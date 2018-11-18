@@ -1,3 +1,6 @@
+<h2>Some notes about book Spring In Action Microservices</h2>
+
+
 <ol>
   <li>
       Java: This directory contains the Java source code used to build the service.
@@ -17,5 +20,18 @@
       resources directory will contain a schema.sql file containing all the SQL com-
       mands used to create the tables and pre-load data for the services into the Post-
       gres database.
+  </li>
+</ol>
+
+<h4>This part of explain is continuation of pom.xml file</h4>
+
+<ol>
+  <li>
+    It copies the executable jar for the service, along with the contents of the src/ main/docker directory, to target/docker.   </li>
+  <li>
+    It executes the Dockerfile defined in the target/docker directory. The Dockerfile is a list of commands that are executed       whenever a new Docker image for that service is provisioned.
+  </li>
+  <li>
+    It pushes the Docker image to the local Docker image repository that’s installed when you install Docker.
   </li>
 </ol>
