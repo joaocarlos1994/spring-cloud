@@ -1,4 +1,4 @@
-<h2>Some notes about book Spring In Action Microservices</h2>
+<h2>Some notes about Spring In Action Microservices book</h2>
 
 
 <ol>
