@@ -67,8 +67,27 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>0.4.10</version>
                 <configuration>
+                    <!--
+                        Every Docker image created will have a tag
+                        associated with it. The Spotify plugin will
+                        name the created image with whatever is
+                        defined in the ${docker.image.tag} tag.
+                    -->
                     <imageName>${docker.image.name}:${docker.image.tag}</imageName>
+                    <!--
+                        All Docker images are created in this book
+                        using a Dockerfile. A Dockerfile is used to
+                        give step-by-step instructions on how the
+                        Docker image should be provisioned.
+                    -->
                     <dockerDirectory>${basedir}/target/dockerfile</dockerDirectory>
+                    <!--
+                        When the Spotify plugin is
+                        executed, it will copy the service’s
+                        executable jar to the Docker image.
+
+                        Continue on README.md on /chapter-01/chapter-01/README.md
+                    -->
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>
