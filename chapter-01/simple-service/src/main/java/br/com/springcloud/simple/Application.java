@@ -16,6 +16,7 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    //Chapter 1.9 I stoped
     @RequestMapping(value="/{firstName}/{lastName}",method = RequestMethod.GET)
     public String hello( @PathVariable("firstName") final String firstName,
                          @PathVariable("lastName") final String lastName) {
