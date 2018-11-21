@@ -8,7 +8,7 @@
 </p>
 <ol>
   <li>
-    <b>Service granularity:<b> Making a service
+    <b>Service granularity:</b> Making a service
       too coarse-grained with responsibilities that overlap into different business 
       problems domains makes the service difficult to maintain and change over time. 
       Making the service too fine-grained increases the overall complexity of the 
