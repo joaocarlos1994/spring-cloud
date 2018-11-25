@@ -23,7 +23,6 @@ public class LicenseServiceController {
                 .withId(licenseId)
                 .withOrganizationId(organizationId)
                 .withProductName("Teleco")
-                .withLicenseType("Seat")
-                .withOrganizationId("Test Org");
+                .withLicenseType("Seat");
     }
 }
