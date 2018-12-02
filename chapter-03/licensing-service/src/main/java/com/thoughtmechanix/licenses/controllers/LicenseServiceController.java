@@ -1,10 +1,12 @@
 package com.thoughtmechanix.licenses.controllers;
 
+import com.thoughtmechanix.licenses.config.ServiceConfig;
 import com.thoughtmechanix.licenses.model.License;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.thoughtmechanix.licenses.services.LicenseService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /***
@@ -16,13 +18,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value="/v1/organizations/{organizationId}/licenses")
 public class LicenseServiceController {
 
+    private final LicenseService licenseService;
+    private final ServiceConfig serviceConfig;
+
+    @Autowired
+    public LicenseServiceController(final LicenseService licenseService, final ServiceConfig serviceConfig) {
+        this.licenseService = licenseService;
+        this.serviceConfig = serviceConfig;
+    }
+
+    @GetMapping(value="/")
+    public List<License> getLicenses(@PathVariable("organizationId") final String organizationId) {
+        return licenseService.getLicensesByOrg(organizationId);
+    }
+
     @GetMapping(value="/{licenseId}")
     public License getLicenses(@PathVariable("organizationId") final String organizationId,
                                @PathVariable("licenseId") final String licenseId) {
-        return new License()
-                .withId(licenseId)
-                .withOrganizationId(organizationId)
-                .withProductName("Teleco")
-                .withLicenseType("Seat");
+        return licenseService.getLicense(organizationId,licenseId);
     }
+
+    @PutMapping(value="{licenseId}")
+    public String updateLicenses(@PathVariable("licenseId")final String licenseId, @RequestBody License license) {
+        return String.format("This is the put");
+    }
+
 }
