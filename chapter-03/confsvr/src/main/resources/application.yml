@@ -16,11 +16,12 @@ server:
 spring:
   cloud:
     config:
+      label: "chapter-03"
       server:
         encrypt.enabled: false
         git:
-          uri: https://github.com/carnellj/config-repo/
-          searchPaths: licensingservice,organizationservice
+          uri: https://github.com/joaocarlos1994/spring-cloud
+          searchPaths: licensingservice
           username: native-cloud-apps
           password: 0ffended
 
