@@ -11,7 +11,7 @@ public class License {
 
     @Id
     @Column(name = "license_id", nullable = false)
-    private String id;
+    private String licenseId;
 
     @Column(name = "organization_id", nullable = false)
     private String organizationId;
@@ -31,12 +31,12 @@ public class License {
     @Column(name="comment")
     private String comment;
 
-    public String getId() {
-        return id;
+    public String getLicenseId() {
+        return licenseId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setLicenseId(String licenseId) {
+        this.licenseId = licenseId;
     }
 
     public String getOrganizationId() {
@@ -88,7 +88,7 @@ public class License {
     }
 
     public License withId(final String id){
-        this.setId(id);
+        this.setLicenseId(id);
         return this;
     }
 

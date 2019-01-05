@@ -39,7 +39,7 @@ public class LicenseService {
 
     @Transactional
     public void deleteLicense(final License license){
-        licenseRepository.delete( license.getId());
+        licenseRepository.delete( license.getLicenseId());
     }
 
     public License getLicense(final String organizationId, final String licenseId) {

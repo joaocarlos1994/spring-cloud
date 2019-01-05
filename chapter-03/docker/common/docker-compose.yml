@@ -12,7 +12,7 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_USER: "postgres"
-      POSTGRES_PASSWORD: "p0stgr@s"
+      POSTGRES_PASSWORD: "root"
       POSTGRES_DB:       "eagle_eye_local"
   licensingservice:
     image: joaobatista/licensing-service:chapter3
