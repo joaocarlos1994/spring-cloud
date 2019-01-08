@@ -13,13 +13,30 @@
 #Classpath and file-based solution
 ####
 #
+#server:
+#   port: 8888
+#spring:
+#  profiles:
+#    active: native
+#  cloud:
+#     config:
+#       server:
+#           native:
+#              searchLocations: classpath:config/,classpath:config/licensingservice
+
+####
+#Git solution
+####
+####################################
 server:
-   port: 8888
+  port: 8888
 spring:
-  profiles:
-    active: native
   cloud:
-     config:
-       server:
-           native:
-              searchLocations: classpath:config/,classpath:config/licensingservice
+    config:
+      server:
+        encrypt.enabled: false
+        git:
+          uri: https://github.com/joaocarlos1994/springcloud-config-repo/
+          searchPaths: licensingservice
+          username: native-cloud-apps
+          password: 0ffended
