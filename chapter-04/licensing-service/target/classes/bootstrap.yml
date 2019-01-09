@@ -7,3 +7,13 @@ spring:
   cloud:
     config:
       http://localhost:8888
+
+#spring:
+#  application:
+#    name: licensingservice
+#  profiles:
+#    active:
+#      default
+#  cloud:
+#    config:
+#      enabled: true

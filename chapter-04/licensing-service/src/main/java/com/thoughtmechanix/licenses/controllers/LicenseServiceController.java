@@ -43,4 +43,11 @@ public class LicenseServiceController {
         return String.format("This is the put");
     }
 
+    @GetMapping(value="/{licenseId}/{clientType}")
+    public License getLicensesWithClient(@PathVariable("organizationId") final String organizationId,
+                                         @PathVariable("licenseId") final String licenseId,
+                                         @PathVariable("clientType") final String clientType) {
+        return licenseService.getLicense(organizationId,licenseId, clientType);
+    }
+
 }
