@@ -1,7 +1,7 @@
-version: '2'
+version: '1'
 services:
   configserver:
-    image: joaobatista/tmx-confsvr:chapter3
+    image: joaobatista/tmx-confsvr:chapter4
     ports:
        - "8888:8888"
     environment:
@@ -15,7 +15,7 @@ services:
       POSTGRES_PASSWORD: "root"
       POSTGRES_DB:       "eagle_eye_local"
   licensingservice:
-    image: joaobatista/licensing-service:chapter3
+    image: joaobatista/licensing-service:chapter4
     ports:
       - "8080:8080"
     environment:
