@@ -37,6 +37,6 @@ spring:
         encrypt.enabled: false
         git:
           uri: https://github.com/joaocarlos1994/springcloud-config-repo/
-          searchPaths: licensingservice
+          searchPaths: licensingservice,organizationservice
           username: native-cloud-apps
           password: 0ffended
