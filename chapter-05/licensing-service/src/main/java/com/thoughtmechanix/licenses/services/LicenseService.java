@@ -9,6 +9,9 @@ import com.thoughtmechanix.licenses.config.ServiceConfig;
 import com.thoughtmechanix.licenses.model.License;
 import com.thoughtmechanix.licenses.model.Organization;
 import com.thoughtmechanix.licenses.repository.LicenseRepository;
+import com.thoughtmechanix.licenses.utils.UserContextHolder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,8 @@ import java.util.UUID;
 
 @Service
 public class LicenseService {
+
+    private static final Logger logger = LoggerFactory.getLogger(LicenseService.class);
 
     private final LicenseRepository licenseRepository;
     private final ServiceConfig config;
@@ -64,7 +69,6 @@ public class LicenseService {
         return license.withComment(config.getExampleProperty());
     }
 
-
     private void randomlyRunLong(){
         Random rand = new Random();
 
@@ -93,9 +97,19 @@ public class LicenseService {
         threadPoolKey = "licenseByOrgThreadPool",
             threadPoolProperties =
                     {@HystrixProperty(name = "coreSize", value="30"),
-                     @HystrixProperty(name="maxQueueSize", value="10")}
+                     @HystrixProperty(name="maxQueueSize", value="10")},
+            commandProperties={
+                    @HystrixProperty(name="circuitBreaker.requestVolumeThreshold", value="10"),
+                    @HystrixProperty(name="circuitBreaker.errorThresholdPercentage", value="75"),
+                    @HystrixProperty(name="circuitBreaker.sleepWindowInMilliseconds", value="7000"),
+                    @HystrixProperty(name="metrics.rollingStats.timeInMilliseconds", value="15000"),
+                    @HystrixProperty(name="metrics.rollingStats.numBuckets", value="5")}
     )
     public List<License> getLicensesByOrg(final String organizationId){
+        logger.debug("getLicensesByOrg Correlation id: {}",
+                UserContextHolder
+                        .getContext()
+                        .getCorrelationId());
         randomlyRunLong();
         return licenseRepository.findByOrganizationId(organizationId);
     }
