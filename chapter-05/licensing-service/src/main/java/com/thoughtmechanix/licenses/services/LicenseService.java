@@ -89,7 +89,12 @@ public class LicenseService {
         return Arrays.asList(license);
     }
 
-    @HystrixCommand(fallbackMethod = "buildFallbackLicenseList")
+    @HystrixCommand(fallbackMethod = "buildFallbackLicenseList",
+        threadPoolKey = "licenseByOrgThreadPool",
+            threadPoolProperties =
+                    {@HystrixProperty(name = "coreSize", value="30"),
+                     @HystrixProperty(name="maxQueueSize", value="10")}
+    )
     public List<License> getLicensesByOrg(final String organizationId){
         randomlyRunLong();
         return licenseRepository.findByOrganizationId(organizationId);
