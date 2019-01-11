@@ -1,5 +1,7 @@
 package com.thoughtmechanix.licenses.services;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 import com.thoughtmechanix.licenses.clients.OrganizationDiscoveryClient;
 import com.thoughtmechanix.licenses.clients.OrganizationFeignClient;
 import com.thoughtmechanix.licenses.clients.OrganizationRestTemplateClient;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 @Service
@@ -60,7 +63,30 @@ public class LicenseService {
         return license.withComment(config.getExampleProperty());
     }
 
+
+    private void randomlyRunLong(){
+        Random rand = new Random();
+
+        int randomNum = rand.nextInt((3 - 1) + 1) + 1;
+
+        if (randomNum==3) sleep();
+    }
+
+    private void sleep(){
+        try {
+            Thread.sleep(11000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @HystrixCommand(
+      commandProperties =
+         {@HystrixProperty(
+       name="execution.isolation.thread.timeoutInMilliseconds",
+       value="12000")})
     public List<License> getLicensesByOrg(final String organizationId){
+        randomlyRunLong();
         return licenseRepository.findByOrganizationId(organizationId);
     }
 

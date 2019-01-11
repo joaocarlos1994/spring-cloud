@@ -1,5 +1,6 @@
 package com.thoughtmechanix.organization.services;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.thoughtmechanix.organization.model.Organization;
 import com.thoughtmechanix.organization.repository.OrganizationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ public class OrganizationService {
     @Autowired
     private OrganizationRepository orgRepository;
 
+    @HystrixCommand
     public Organization getOrg(String organizationId) {
         return orgRepository.findById(organizationId);
     }
