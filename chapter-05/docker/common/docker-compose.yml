@@ -1,11 +1,11 @@
 version: '2'
 services:
   eurekaserver:
-     image:   joaobatista/tmx-eurekasvr:chapter4
+     image:   joaobatista/tmx-eurekasvr:chapter5
      ports:
        - "8761:8761"
   configserver:
-      image: joaobatista/tmx-confsvr:chapter4
+      image: joaobatista/tmx-confsvr:chapter5
       ports:
          - "8888:8888"
       environment:
@@ -13,7 +13,7 @@ services:
          EUREKASERVER_PORT: "8761"
          ENCRYPT_KEY:       "IMSYMMETRIC"
   # configserver2:
-  #     image: joaobatista/tmx-confsvr:chapter4
+  #     image: joaobatista/tmx-confsvr:chapter5
   #     ports:
   #        - "8889:8889"
   #     links:
@@ -31,7 +31,7 @@ services:
         - POSTGRES_PASSWORD=p0stgr@s
         - POSTGRES_DB=eagle_eye_local
   licensingservice:
-      image: joaobatista/licensing-service:chapter4
+      image: joaobatista/licensing-service:chapter5
       ports:
         - "8080:8080"
       environment:
@@ -44,7 +44,7 @@ services:
         DATABASESERVER_PORT: "5432"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   organizationservice:
-      image: joaobatista/tmx-organization-service:chapter4
+      image: joaobatista/tmx-organization-service:chapter5
       ports:
         - "8085:8085"
       environment:
@@ -57,7 +57,7 @@ services:
         DATABASESERVER_PORT: "5432"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   organizationservice2:
-      image: joaobatista/tmx-organization-service:chapter4
+      image: joaobatista/tmx-organization-service:chapter5
       ports:
         - "8086:8086"
       environment:
