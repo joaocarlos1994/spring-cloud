@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -80,11 +81,15 @@ public class LicenseService {
         }
     }
 
-    @HystrixCommand(
-      commandProperties =
-         {@HystrixProperty(
-       name="execution.isolation.thread.timeoutInMilliseconds",
-       value="12000")})
+    private List<License> buildFallbackLicenseList(String organizationId){
+        final License license = new License()
+                .withId("0000000-00-00000")
+                .withOrganizationId( organizationId )
+                .withProductName("Sorry no licensing information currently available");
+        return Arrays.asList(license);
+    }
+
+    @HystrixCommand(fallbackMethod = "buildFallbackLicenseList")
     public List<License> getLicensesByOrg(final String organizationId){
         randomlyRunLong();
         return licenseRepository.findByOrganizationId(organizationId);
