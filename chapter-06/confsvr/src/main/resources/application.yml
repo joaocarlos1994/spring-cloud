@@ -30,6 +30,13 @@
 ####################################
 server:
   port: 8888
+
+logging:
+    level:
+      com.netflix: WARN
+      org.springframework.web: WARN
+      com.thoughtmechanix: DEBUG
+
 spring:
   cloud:
     config:
@@ -37,6 +44,6 @@ spring:
         encrypt.enabled: false
         git:
           uri: https://github.com/joaocarlos1994/springcloud-config-repo/
-          searchPaths: licensingservice,organizationservice
+          searchPaths: licensingservice,organizationservice,zuulservice
           username: native-cloud-apps
           password: 0ffended
