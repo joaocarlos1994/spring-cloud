@@ -1,4 +1,4 @@
-package com.thoughtmechanix.licenses.utils;
+package com.thoughtmechanix.zuulsvr.utils;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
@@ -8,16 +8,7 @@ import org.springframework.http.client.ClientHttpResponse;
 
 import java.io.IOException;
 
-/**
- * The main goal of this {@code UserContextInterceptor} is ensure that the correlation id
- * gets propagated forward through {@code {@link org.springframework.web.client.RestTemplate} that
- * was defined in {@code {@link com.thoughtmechanix.licenses.Application}}
- *
- * @see  com.thoughtmechanix.licenses.Application
- *
- * */
 public class UserContextInterceptor implements ClientHttpRequestInterceptor {
-
     //The intercept() method is invoked before the actual HTTP service call
     //occurs by the RestTemplate.
     @Override
