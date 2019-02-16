@@ -1,11 +1,11 @@
 version: '1'
 services:
   eurekaserver:
-     image:   joaobatista/tmx-eurekasvr:chapter6
+     image:   joaobatista/tmx-eurekasvr:chapter7
      ports:
        - "8761:8761"
   configserver:
-      image: joaobatista/tmx-confsvr:chapter6
+      image: joaobatista/tmx-confsvr:chapter7
       ports:
          - "8888:8888"
       environment:
@@ -13,18 +13,16 @@ services:
          EUREKASERVER_PORT: "8761"
          ENCRYPT_KEY:       "IMSYMMETRIC"
   zuulserver:
-    image: joaobatista/tmx-zuulsvr:chapter6
-    ports:
-      - "5555:5555"
-    environment:
-      PROFILE: "default"
-      SERVER_PORT: "5555"
-      CONFIGSERVER_URI: "http://configserver:8888"
-      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-      EUREKASERVER_PORT:        "8761"
-      DATABASESERVER_PORT:      "5432"
-      CONFIGSERVER_PORT:        "8888"
-      ORGSERVERNEW_PORT:        "8087"
+      image: joaobatista/tmx-zuulsvr:chapter7
+      ports:
+        - "5555:5555"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "5555"
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
   database:
       image: postgres:9.5
       ports:
@@ -34,56 +32,78 @@ services:
         - POSTGRES_PASSWORD=p0stgr@s
         - POSTGRES_DB=eagle_eye_local
   licensingservice:
-      image: joaobatista/licensing-service:chapter6
+      image: joaobatista/tmx-licensing-service:chapter7
       ports:
-        - "8080:8080"
+        - "8082:8082"
       environment:
         PROFILE: "default"
-        SERVER_PORT: "8080"
+        SERVER_PORT: "8082"
+        ES_PORT:           9200
+        DATABASE_PORT:     5432
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        AUTHSERVER_PORT:   8091
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-        EUREKASERVER_PORT:   "8761"
-        CONFIGSERVER_PORT:   "8888"
-        DATABASESERVER_PORT: "5432"
+        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   organizationservice:
-      image: joaobatista/tmx-organization-service:chapter6
+      image: joaobatista/tmx-organization-service:chapter7
       ports:
         - "8085:8085"
       environment:
         PROFILE: "default"
         SERVER_PORT: "8085"
+        DATABASE_PORT:     5432
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        AUTHSERVER_PORT:   8091
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-        EUREKASERVER_PORT:   "8761"
-        CONFIGSERVER_PORT:   "8888"
-        DATABASESERVER_PORT: "5432"
+        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
+        ENCRYPT_KEY:       "IMSYMMETRIC"
+  authenticationservice:
+      image: joaobatista/tmx-authentication-service:chapter7
+      ports:
+        - "8901:8901"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "8901"
+        DATABASE_PORT:     5432
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
         ENCRYPT_KEY:       "IMSYMMETRIC"
   orgservice-new:
-    image: joaobatista/tmx-orgservice-new:chapter6
+    image: joaobatista/tmx-orgservice-new:chapter7
     ports:
       - "8087:8087"
     environment:
-      PROFILE: "default"
-      SERVER_PORT: "8087"
-      CONFIGSERVER_URI: "http://configserver:8888"
-      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-      EUREKASERVER_PORT:        "8761"
-      DATABASESERVER_PORT:      "5432"
-      CONFIGSERVER_PORT:        "8888"
-      ENCRYPT_KEY:       "IMSYMMETRIC"
+        PROFILE: "default"
+        SERVER_PORT: "8085"
+        DATABASE_PORT:     5432
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        AUTHSERVER_PORT:   8091
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
+        ENCRYPT_KEY:       "IMSYMMETRIC"
   specialroutes-service:
-    image: joaobatista/tmx-specialroutes-service:chapter6
+    image: joaobatista/tmx-specialroutes-service:chapter7
     ports:
       - "8910:8910"
     environment:
-      PROFILE: "default"
-      SERVER_PORT: "8910"
-      CONFIGSERVER_URI: "http://configserver:8888"
-      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-      EUREKASERVER_PORT:        "8761"
-      DATABASESERVER_PORT:      "5432"
-      CONFIGSERVER_PORT:        "8888"
-      ENCRYPT_KEY:       "IMSYMMETRIC"
+        PROFILE: "default"
+        SERVER_PORT: "8085"
+        DATABASE_PORT:     5432
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        AUTHSERVER_PORT:   8091
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
+        ENCRYPT_KEY:       "IMSYMMETRIC"
 
 
