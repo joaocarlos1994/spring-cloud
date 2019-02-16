@@ -14,9 +14,9 @@ public class TrackingFilter extends ZuulFilter {
     private static final boolean SHOULD_FILTER = true;
     private static final Logger logger = LoggerFactory.getLogger(TrackingFilter.class);
 
-    @Autowired
     private final FilterUtils filterUtils;
 
+    @Autowired
     public TrackingFilter(final FilterUtils filterUtils) {
         this.filterUtils = filterUtils;
     }
