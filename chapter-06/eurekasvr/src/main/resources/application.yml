@@ -13,6 +13,6 @@ eureka:
 
 logging:
     level:
-      com.netflix: WARN
-      org.springframework.web: WARN
+      com.netflix: DEBUG
+      org.springframework.web: DEBUG
       com.thoughtmechanix: DEBUG
