@@ -1,5 +1,6 @@
 server:
     port: 8080
+
 eureka:
   instance:
     preferIpAddress: true
@@ -8,6 +9,11 @@ eureka:
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+
+security:
+  oauth2:
+    resource:
+      userInfoUri: http://localhost:8901/auth/user
 
 #Setting the logging levels for the service
 logging:
