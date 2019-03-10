@@ -2,8 +2,6 @@ package com.thoughtmechanix.licenses.services;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
-import com.thoughtmechanix.licenses.clients.OrganizationDiscoveryClient;
-import com.thoughtmechanix.licenses.clients.OrganizationFeignClient;
 import com.thoughtmechanix.licenses.clients.OrganizationRestTemplateClient;
 import com.thoughtmechanix.licenses.config.ServiceConfig;
 import com.thoughtmechanix.licenses.model.License;
@@ -28,20 +26,14 @@ public class LicenseService {
 
     private final LicenseRepository licenseRepository;
     private final ServiceConfig config;
-    private final OrganizationDiscoveryClient organizationDiscoveryClient;
     private final OrganizationRestTemplateClient organizationRestClient;
-    private final OrganizationFeignClient organizationFeignClient;
 
     @Autowired
     public LicenseService(final LicenseRepository licenseRepository, final ServiceConfig config,
-                          final OrganizationDiscoveryClient organizationDiscoveryClient,
-                          final OrganizationRestTemplateClient organizationRestClient,
-                          final OrganizationFeignClient organizationFeignClient) {
+                          final OrganizationRestTemplateClient organizationRestClient) {
         this.licenseRepository = licenseRepository;
         this.config = config;
-        this.organizationDiscoveryClient = organizationDiscoveryClient;
         this.organizationRestClient = organizationRestClient;
-        this.organizationFeignClient = organizationFeignClient;
     }
 
     @Transactional
@@ -117,7 +109,7 @@ public class LicenseService {
     public License getLicense(String organizationId,String licenseId, String clientType) {
         final License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
 
-        final Organization org = retrieveOrgInfo(organizationId, clientType);
+        final Organization org = getOrganization(organizationId);
 
         return license
                 .withOrganizationName(org.getName())
@@ -127,24 +119,9 @@ public class LicenseService {
                 .withComment(config.getExampleProperty());
     }
 
-    private Organization retrieveOrgInfo(String organizationId, String clientType){
-        final Organization organization;
-        switch (clientType) {
-            case "feign":
-                System.out.println("I am using the feign client");
-                organization = organizationFeignClient.getOrganization(organizationId);
-                break;
-            case "rest":
-                System.out.println("I am using the rest client");
-                organization = organizationRestClient.getOrganization(organizationId);
-                break;
-            case "discovery":
-                System.out.println("I am using the discovery client");
-                organization = organizationDiscoveryClient.getOrganization(organizationId);
-                break;
-            default:
-                organization = organizationRestClient.getOrganization(organizationId);
-        }
-        return organization;
+    @HystrixCommand
+    private Organization getOrganization(String organizationId) {
+        return organizationRestClient.getOrganization(organizationId);
     }
+
 }
