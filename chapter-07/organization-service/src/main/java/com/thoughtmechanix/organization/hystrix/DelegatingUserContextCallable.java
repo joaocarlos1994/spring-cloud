@@ -10,12 +10,10 @@ import java.util.concurrent.Callable;
 
 
 public final class DelegatingUserContextCallable<V> implements Callable<V> {
+
     private static final Logger logger = LoggerFactory.getLogger(DelegatingUserContextCallable.class);
+
     private final Callable<V> delegate;
-
-
-
-    //private final UserContext delegateUserContext;
     private UserContext originalUserContext;
 
     public DelegatingUserContextCallable(Callable<V> delegate,
@@ -24,10 +22,6 @@ public final class DelegatingUserContextCallable<V> implements Callable<V> {
         Assert.notNull(userContext, "userContext cannot be null");
         this.delegate = delegate;
         this.originalUserContext = userContext;
-    }
-
-    public DelegatingUserContextCallable(Callable<V> delegate) {
-        this(delegate, UserContextHolder.getContext());
     }
 
     public V call() throws Exception {
