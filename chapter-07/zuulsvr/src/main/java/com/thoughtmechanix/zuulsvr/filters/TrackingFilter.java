@@ -2,6 +2,10 @@ package com.thoughtmechanix.zuulsvr.filters;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.thoughtmechanix.zuulsvr.config.ServiceConfig;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import java.io.UnsupportedEncodingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,9 @@ public class TrackingFilter extends ZuulFilter {
         this.filterUtils = filterUtils;
     }
 
+    @Autowired
+    private ServiceConfig serviceConfig;
+
     @Override
     public String filterType() {
         return FilterUtils.PRE_FILTER_TYPE;
@@ -38,12 +45,16 @@ public class TrackingFilter extends ZuulFilter {
 
     @Override
     public Object run() {
+
         if (isCorrelationIdPresent()) {
             logger.debug("tmx-correlation-id found in tracking filter: {}.", filterUtils.getCorrelationId());
         } else {
             filterUtils.setCorrelationId(generateCorrelationId());
             logger.debug("tmx-correlation-id generated in tracking filter: {}.", filterUtils.getCorrelationId());
         }
+
+        System.out.println("The organization id from the token is : " + getOrganizationId());
+        filterUtils.setOrgId(getOrganizationId());
 
         final RequestContext ctx = RequestContext.getCurrentContext();
         logger.debug("Processing incoming request for {}.", ctx.getRequest().getRequestURI());
@@ -62,5 +73,21 @@ public class TrackingFilter extends ZuulFilter {
         return java.util.UUID.randomUUID().toString();
     }
 
+    private String getOrganizationId() {
+        String result= "";
+        if (filterUtils.getAuthToken()!= null) {
+            final String authToken = filterUtils.getAuthToken().replace("Bearer ","");
+            try {
+                final Claims claims = Jwts.parser().setSigningKey(serviceConfig.getJwtSigningKey().getBytes("UTF-8"))
+                        .parseClaimsJws(authToken)
+                        .getBody();
+                result = (String) claims.get("organizationId");
+
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
 
 }
