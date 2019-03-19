@@ -1,6 +1,7 @@
 package com.thoughtmechanix.licenses.clients;
 
 import com.thoughtmechanix.licenses.model.Organization;
+import com.thoughtmechanix.licenses.repository.OrganizationRedisRepository;
 import com.thoughtmechanix.licenses.utils.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +19,51 @@ public class OrganizationRestTemplateClient {
     @Autowired
     private OAuth2RestTemplate oauth2RestTemplate;
 
+    @Autowired
+    private OrganizationRedisRepository orgRedisRepo;
+
     public Organization getOrganization(final String organizationId) {
         logger.debug("In Licensing Service.getOrganization: {}", UserContext.getCorrelationId());
+
+        Organization org = checkRedisCache(organizationId);
+
+        if (org!=null){
+            logger.debug("I have successfully retrieved an organization {} from the redis cache: {}", organizationId, org);
+            return org;
+        }
 
         final ResponseEntity<Organization> restExchange =
                 oauth2RestTemplate.exchange(
                         "http://zuulservice/api/organization/v1/organizations/{organizationId}",
                         HttpMethod.GET,
                         null, Organization.class, organizationId);
-        return restExchange.getBody();
+
+        /*Save the record from cache*/
+        org = restExchange.getBody();
+
+        if (org!=null) {
+            cacheOrganizationObject(org);
+        }
+
+        return org;
+    }
+
+    private void cacheOrganizationObject(Organization org) {
+        try {
+            orgRedisRepo.saveOrganization(org);
+        }catch (Exception ex){
+            logger.error("Unable to cache organization {} in Redis. Exception {}", org.getId(), ex);
+        }
+    }
+
+    private Organization checkRedisCache(String organizationId) {
+        try {
+            return orgRedisRepo.findOrganization(organizationId);
+        }
+        catch (Exception ex){
+            logger.error("Error encountered while trying to retrieve organization {} check Redis Cache.  Exception {}", organizationId, ex);
+            return null;
+        }
     }
 
 }

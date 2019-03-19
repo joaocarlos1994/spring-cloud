@@ -10,6 +10,8 @@ import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
@@ -47,7 +49,6 @@ public class Application {
 
     @StreamListener(Sink.INPUT)
     public void loggerSink(final OrganizationChangeModel orgChange) {
-        System.out.println(String.format("\n\n\n\n\n Received an event for organization id {} \n\n\n\n\n", orgChange.getOrganizationId()));
-        //System.out.println(String.format("\n\n\n\n\n Received an event for organization id {} \n\n\n\n\n", orgChange));
+        System.out.println(String.format("\n\n\n\nReceived an event for organization id %s\n\n\n\n", orgChange.getOrganizationId()));
     }
 }
