@@ -1,5 +1,19 @@
 server:
-    port: 8080
+  port: 8080
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        input:
+          destination: orgChangeTopic
+          content-type: application/json
+          #The group property defines the name of the consumer group that will be consuming the message
+          group: licensingGroup
+      kafka:
+        binder:
+          zkNodes: localhost
+          brokers: localhost
 
 eureka:
   instance:
@@ -18,6 +32,6 @@ security:
 #Setting the logging levels for the service
 logging:
   level:
-    com.netflix: DEBUG
-    org.springframework.web: DEBUG
+    com.netflix: WARN
+    org.springframework.web: WARN
     com.thoughtmechanix: DEBUG

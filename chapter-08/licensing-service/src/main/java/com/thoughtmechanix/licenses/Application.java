@@ -1,10 +1,14 @@
 package com.thoughtmechanix.licenses;
 
+import com.thoughtmechanix.licenses.events.models.OrganizationChangeModel;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -14,13 +18,20 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 /**
  * This {@code {@link SpringBootApplication}} tells the Spring Boot framework
  * that this is the bootstrap class for the project
+ *
+ * The {@link EnableBinding} annotation tells the service to the use the
+ * channels defined in the Sink interface to listen for incoming messages.
+ *
  * */
 @SpringBootApplication
 @EnableEurekaClient
 @EnableCircuitBreaker
 @EnableResourceServer
+@EnableBinding(Sink.class)
 public class Application {
-    
+
+
+
     public static void main(final String[] args) {
         //Call to start the entire Spring Boot service
         SpringApplication.run(Application.class, args);
@@ -32,5 +43,11 @@ public class Application {
             final OAuth2ClientContext oauth2ClientContext,
             final OAuth2ProtectedResourceDetails details) {
         return new OAuth2RestTemplate(details, oauth2ClientContext);
+    }
+
+    @StreamListener(Sink.INPUT)
+    public void loggerSink(final OrganizationChangeModel orgChange) {
+        System.out.println(String.format("\n\n\n\n\n Received an event for organization id {} \n\n\n\n\n", orgChange.getOrganizationId()));
+        //System.out.println(String.format("\n\n\n\n\n Received an event for organization id {} \n\n\n\n\n", orgChange));
     }
 }

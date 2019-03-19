@@ -1,4 +1,4 @@
-package com.thoughtmechanix.organization.events.models;
+package com.thoughtmechanix.licenses.events.models;
 
 import java.io.Serializable;
 
@@ -15,10 +15,11 @@ public class OrganizationChangeModel implements Serializable {
     private String organizationId;
     private String correlationId;
 
-    public OrganizationChangeModel() {}
+    public OrganizationChangeModel(){
+        super();
+    }
 
-    public  OrganizationChangeModel(final String type, final String action, final String organizationId,
-                                    final String correlationId) {
+    public  OrganizationChangeModel(String type, String action, String organizationId, String correlationId) {
         super();
         this.type   = type;
         this.action = action;

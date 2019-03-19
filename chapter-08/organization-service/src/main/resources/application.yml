@@ -13,11 +13,11 @@ spring:
           content-type: application/json
         #The stream.bindings.kafka property tells Spring you’re going to use Kafka as the message bus in the service (you could
         #have used RabbitMQ as an alternative).
-        kafka:
-          binder:
-            #The zknodes and brokers property tells Spring Cloud Stream the network location of your Kafka and ZooKeeper.
-            zkNodes: localhost
-            brokers: localhost
+      kafka:
+        binder:
+          #The zknodes and brokers property tells Spring Cloud Stream the network location of your Kafka and ZooKeeper.
+          zkNodes: localhost
+          brokers: localhost
 
 eureka:
   instance:
@@ -36,7 +36,7 @@ security:
 
 logging:
   level:
-    com.netflix: DEBUG
-    org.springframework.web: DEBUG
+    com.netflix: WARN
+    org.springframework.web: WARN
     com.thoughtmechanix: DEBUG
         
