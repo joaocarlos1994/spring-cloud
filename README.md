@@ -113,4 +113,11 @@ There is more note on Chapter 9.
 <h2>Microservice build/deployment patterns</h2>
 Note on Chapter 1.
 
+<h3></h3>
+<p>
+ Command to create Kafka container on docker:
+ 
+ <code>docker run -p 2181:2181 -p 9092:9092 --env ADVERTISED_HOST=localhost --env ADVERTISED_PORT=9092 spotify/kafka</code>
+</p>
+
 
