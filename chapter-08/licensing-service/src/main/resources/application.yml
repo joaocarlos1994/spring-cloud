@@ -5,7 +5,8 @@ spring:
   cloud:
     stream:
       bindings:
-        input:
+        #inboundOrgChanges is the name of your channel and maps to the custom input() channel you saw in listing
+        inboundOrgChanges:
           destination: orgChangeTopic
           content-type: application/json
           #The group property defines the name of the consumer group that will be consuming the message

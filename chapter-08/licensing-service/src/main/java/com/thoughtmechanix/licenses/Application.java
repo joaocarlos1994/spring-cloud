@@ -29,7 +29,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 @EnableEurekaClient
 @EnableCircuitBreaker
 @EnableResourceServer
-@EnableBinding(Sink.class)
 public class Application {
 
 
@@ -45,10 +44,5 @@ public class Application {
             final OAuth2ClientContext oauth2ClientContext,
             final OAuth2ProtectedResourceDetails details) {
         return new OAuth2RestTemplate(details, oauth2ClientContext);
-    }
-
-    @StreamListener(Sink.INPUT)
-    public void loggerSink(final OrganizationChangeModel orgChange) {
-        System.out.println(String.format("\n\n\n\nReceived an event for organization id %s\n\n\n\n", orgChange.getOrganizationId()));
     }
 }

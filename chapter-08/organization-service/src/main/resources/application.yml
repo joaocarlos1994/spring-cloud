@@ -6,8 +6,8 @@ spring:
     #stream.bindings is the start of the configuration needed for your service to publish to a Spring Cloud Stream message broke.
     stream:
       bindings:
-        #output is the name of your channel and maps to the Source.output() channel you saw in listing
-        output:
+        #outboundOrg is the name of your channel and maps to the custom output() channel you saw in listing
+        outboundOrg:
           #orgChangeTopic is the name of the message queue (or topic) you’re going to write messages to.
           destination:  orgChangeTopic
           content-type: application/json

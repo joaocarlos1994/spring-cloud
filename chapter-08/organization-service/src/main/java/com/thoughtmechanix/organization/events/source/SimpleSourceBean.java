@@ -5,7 +5,7 @@ import com.thoughtmechanix.organization.utils.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
@@ -22,15 +22,16 @@ import org.springframework.stereotype.Component;
  * @version 1.0 18/03/2019
  */
 @Component
+@EnableBinding(CustomChannels.class)
 public class SimpleSourceBean {
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleSourceBean.class);
 
-    private Source source;
+    private CustomChannels customChannels;
 
     @Autowired
-    public SimpleSourceBean(final Source source) {
-        this.source = source;
+    public SimpleSourceBean(CustomChannels customChannels) {
+        this.customChannels = customChannels;
     }
 
     public void publishOrgChange(final String action, final String orgId) {
@@ -42,12 +43,10 @@ public class SimpleSourceBean {
                 action,
                 orgId,
                 UserContext.getCorrelationId());
-        source
-         .output()
-         .send(MessageBuilder
-                 .withPayload(change).build());
 
-
+        customChannels
+                .outboundOrg()
+                    .send(MessageBuilder
+                            .withPayload(change).build());
     }
-
 }
