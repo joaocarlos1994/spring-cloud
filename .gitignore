@@ -18,6 +18,7 @@
 *.zip
 *.tar.gz
 *.rar
+!chapter-09/confsvr/src/main/jce-policy-jar/*.jar
 
 /target
 /target/
