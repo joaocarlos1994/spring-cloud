@@ -76,6 +76,10 @@
                                     <directory>src/main/docker</directory>
                                     <filtering>true</filtering>
                                 </resource>
+                                <resource>
+                                    <directory>src/main/jce-policy-jar</directory>
+                                    <filtering>true</filtering>
+                                </resource>
                             </resources>
                         </configuration>
                     </execution>
@@ -93,6 +97,11 @@
                             <targetPath>/</targetPath>
                             <directory>${project.build.directory}</directory>
                             <include>${project.build.finalName}.jar</include>
+                        </resource>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>src/main/jce-policy-jar</directory>
+                            <include>local_policy.jar</include>
                         </resource>
                     </resources>
                 </configuration>

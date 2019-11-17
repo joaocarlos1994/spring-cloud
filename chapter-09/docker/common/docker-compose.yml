@@ -1,17 +1,17 @@
-version: '1'
+version: '3.3'
 services:
   eurekaserver:
-     image:   joaobatista/tmx-eurekasvr:chapter9
-     ports:
-       - "8761:8761"
+      image: joaobatista/tmx-eurekasvr:chapter9
+      ports:
+         - "8761:8761"
   configserver:
       image: joaobatista/tmx-confsvr:chapter9
       ports:
          - "8888:8888"
       environment:
-         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-         EUREKASERVER_PORT: "8761"
-         ENCRYPT_KEY:       "IMSYMMETRIC"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        EUREKASERVER_PORT: "8761"
+        ENCRYPT_KEY:       "IMSYMMETRIC"
   zuulserver:
       image: joaobatista/tmx-zuulsvr:chapter9
       ports:
@@ -25,9 +25,9 @@ services:
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
   database:
-      image: postgres:9.5
+      image: postgres:latest
       ports:
-      - "5432:5432"
+        - "5432:5432"
       environment:
         - POSTGRES_USER=postgres
         - POSTGRES_PASSWORD=postgres
@@ -40,7 +40,7 @@ services:
         PROFILE: "default"
         SERVER_PORT: "8080"
         ES_PORT:           "9200"
-        DATABASE_PORT:     "5432"
+        DATABASESERVER_PORT: "5432"
         CONFIGSERVER_PORT: "8888"
         EUREKASERVER_PORT: "8761"
         AUTHSERVER_PORT:   "8091"
@@ -60,7 +60,7 @@ services:
       environment:
         PROFILE: "default"
         SERVER_PORT: "8085"
-        DATABASE_PORT:     "5432"
+        DATABASESERVER_PORT: "5432"
         CONFIGSERVER_PORT: "8888"
         EUREKASERVER_PORT: "8761"
         AUTHSERVER_PORT:   "8091"
@@ -79,7 +79,7 @@ services:
       environment:
         PROFILE: "default"
         SERVER_PORT: "8901"
-        DATABASE_PORT:     "5432"
+        DATABASESERVER_PORT: "5432"
         CONFIGSERVER_PORT: "8888"
         EUREKASERVER_PORT: "8761"
         ENCRYPT_KEY:       "IMSYMMETRIC"
@@ -92,7 +92,7 @@ services:
     environment:
         PROFILE: "default"
         SERVER_PORT: "8085"
-        DATABASE_PORT:     "5432"
+        DATABASESERVER_PORT: "5432"
         CONFIGSERVER_PORT: "8888"
         EUREKASERVER_PORT: "8761"
         AUTHSERVER_PORT:   "8091"
@@ -107,11 +107,11 @@ services:
   specialroutes-service:
     image: joaobatista/tmx-specialroutes-service:chapter9
     ports:
-      - "8910:8910"
+        - "8910:8910"
     environment:
         PROFILE: "default"
         SERVER_PORT: "8085"
-        DATABASE_PORT:     "5432"
+        DATABASESERVER_PORT: "5432"
         CONFIGSERVER_PORT: "8888"
         EUREKASERVER_PORT: "8761"
         AUTHSERVER_PORT:   "8091"
@@ -128,3 +128,16 @@ services:
     ports:
       - 2181:2181
       - 9092:9092
+  logspout:
+    image: gliderlabs/logspout
+    command: syslog://logs5.papertrailapp.com:12017
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+  pgadmin4:
+    image: dpage/pgadmin4
+    ports:
+        - 15432:80
+    environment:
+        PGADMIN_DEFAULT_EMAIL: "test@test.com.br"
+        PGADMIN_DEFAULT_PASSWORD: "test"
+        DATABASESERVER_PORT: "5432"

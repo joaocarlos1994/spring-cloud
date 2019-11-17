@@ -22,7 +22,7 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <start-class>com.thoughtmechanix.licenses.Application</start-class>
-        <docker.image.name>joaobatista/licensing-service</docker.image.name>
+        <docker.image.name>joaobatista/tmx-licensing-service</docker.image.name>
         <docker.image.tag>chapter9</docker.image.tag>
     </properties>
 
@@ -119,6 +119,10 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
             <version>2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-sleuth</artifactId>
         </dependency>
     </dependencies>
 
