@@ -18,12 +18,7 @@
 *.zip
 *.tar.gz
 *.rar
-!chapter-09/confsvr/src/main/jce-policy-jar/*.jar
-
-/target
-/target/
-**/target/
-.idea/
+!/src/main/jce-policy-jar/*.jar
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
