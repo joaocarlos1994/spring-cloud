@@ -1,3 +1,7 @@
+spring:
+  zipkin:
+    baseUrl:  localhost:9411
+
 server:
     port: 8910
 

@@ -2,6 +2,8 @@ server:
     port: 8085
 
 spring:
+  zipkin:
+    baseUrl:  localhost:9411
   cloud:
     #stream.bindings is the start of the configuration needed for your service to publish to a Spring Cloud Stream message broke.
     stream:
